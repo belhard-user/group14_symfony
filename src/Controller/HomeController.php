@@ -3,18 +3,32 @@
 namespace App\Controller;
 
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-class HomeController
+class HomeController extends AbstractController
 {
+    /**
+     * @Route("/", name="home")
+     */
     public function index()
     {
-        return new Response('<html><body><h1>Hello world</h1></body></html>');
+        $url = $this->generateUrl('article', [
+            'slug' => 'abracadabra'
+        ]);
+
+        return new Response("<html><body><a href='$url'>Hello world</a></body></html>");
     }
 
-    public function test()
+    /**
+     * @Route("/blog/{slug}", name="article", requirements={"slug":"\w+"})
+     * @Method({"PUT", "POST", "GET"})
+     */
+    public function test($slug)
     {
-        $res = new Response('<html><body><h1>abra</h1></body></html>');
+        $res = new Response('<html><body><h1>'.$slug.'</h1></body></html>');
         $res->headers->set('Foo', 'foobar');
 
         return $res;
