@@ -1,7 +1,7 @@
-index:
-    path: /
-    controller: App\Controller\HomeController::index
-
-article:
-    path: /abra-cadabra
-    controller: App\Controller\HomeController::test
+#index:
+#    path: /
+#    controller: App\Controller\HomeController::index
+#
+#article:
+#    path: /abra-cadabra
+#    controller: App\Controller\HomeController::test
