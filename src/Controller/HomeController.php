@@ -19,7 +19,9 @@ class HomeController extends AbstractController
             'slug' => 'abracadabra'
         ]);
 
-        return new Response("<html><body><a href='$url'>Hello world</a></body></html>");
+        return $this->render('home/index.html.twig', [
+            'url' => $url
+        ]);
     }
 
     /**
