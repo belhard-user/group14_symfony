@@ -15,13 +15,7 @@ class HomeController extends AbstractController
      */
     public function index()
     {
-        $url = $this->generateUrl('article', [
-            'slug' => 'abracadabra'
-        ]);
-
-        return $this->render('home/index.html.twig', [
-            'url' => $url
-        ]);
+        return $this->render('home/index.html.twig', []);
     }
 
     /**
