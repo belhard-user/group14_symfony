@@ -24,6 +24,21 @@ class Test
     private $name;
 
     /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $ip;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isActive;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -60,6 +75,44 @@ class Test
     }
 
     /**
+     * @return mixed
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param $isActive
+     * @return $this
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+        
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param $createdAt
+     * @return $this
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+        
+        return $this;
+    }
+
+    /**
      * @param $ip
      * 
      * @return $this
@@ -70,9 +123,4 @@ class Test
         
         return $this;
     }
-
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $ip;
 }

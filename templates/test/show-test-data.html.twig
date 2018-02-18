@@ -1,9 +1,15 @@
-{% extends "base.html.twig" %}
+{% extends "main.html.twig" %}
 
 {% block body %}
+    <a href="{{ path('add_test_data') }}" class="btn btn-primary btn-lg">Добавить тествые данные</a>
     <ul>
         {% for item in allTestRecord %}
-            <li>{{ item.name }}</li>
+            <li>
+                {{ item.name }} ({{ item.ip }})
+                <a href="{{ path('test_edit', {
+                    "id" : item.id
+                }) }}" class="float-right">Редактировать</a>
+            </li>
         {% endfor %}
     </ul>
 {% endblock %}

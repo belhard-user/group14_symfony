@@ -23,6 +23,17 @@ class TestRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+    
+    public function findActiveUser()
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.isActive = :active')
+            ->setParameter('active', 1)
+            ->orderBy('t.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
     /*
     public function findBySomething($value)

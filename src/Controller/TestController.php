@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Test;
+use App\Form\TestType;
 use App\Service\Quotes;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -42,22 +43,25 @@ class TestController extends Controller
      */
     public function addToDataBase(Request $request)
     {
+        
+        $test = $this->getDoctrine()->getRepository(Test::class)->find(1);
+
         $em = $this->getDoctrine()->getManager();
+        $em->remove($test);
+        $em->flush();
+        
+        
+        /*$em = $this->getDoctrine()->getManager();
         $test = new Test();
         $test
             ->setName('Neo')
             ->setIp($request->getClientIp())
+            ->setCreatedAt(new \DateTime())
+            ->setIsActive(true)
         ;
         $em->persist($test);
 
-        $test2 = new Test();
-        $test2
-            ->setName('Neo 2')
-            ->setIp($request->getClientIp())
-        ;
-        $em->persist($test2);
-
-        // $em->flush();
+        $em->flush();*/
         
         return $this->render('test/add-to-data-base.html.twig');
     }
@@ -70,12 +74,58 @@ class TestController extends Controller
         $allTestRecord = $this->getDoctrine()
             ->getRepository(Test::class)
             // ->findUserWhoseIdIsMoreThanTwo()
-            ->findAll()
+            ->findActiveUser()
         ;
         // dump($allTestRecord); die;
 
         return $this->render('test/show-test-data.html.twig', [
             'allTestRecord' => $allTestRecord
+        ]);
+    }
+
+    /**
+     * @Route("/test-form", name="add_test_data")
+     */
+    public function addTestRecord(Request $request)
+    {
+        $form = $this->createForm(TestType::class);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $test = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($test);
+            $em->flush();
+
+            return $this->redirectToRoute('show_test_data');
+        }
+        
+        return $this->render('test/test-from.html.twig', [
+            'testForm' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/test/{id}/edit", name="test_edit")
+     */
+    public function editTestRecord(Test $test, Request $request)
+    {
+        $form = $this->createForm(TestType::class, $test);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $test = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($test);
+            $em->flush();
+
+            return $this->redirectToRoute('show_test_data');
+        }
+
+        return $this->render('test/edit-test-form.html.twig', [
+            'testForm' => $form->createView()
         ]);
     }
 }
