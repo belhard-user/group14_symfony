@@ -1,0 +1,28 @@
+{% extends 'main.html.twig' %}
+
+{% block body %}
+
+    <section class="movies" id="movies">
+        <h2>Featured Movies</h2>
+        <div class="row">
+            {% for article in articles%}
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <article class="card">
+                        <header class="title-header">
+                            <h3>{{ article.title|length > 20 ? article.title|slice(0, 20) ~ '...' : article.title }}</h3>
+                        </header>
+                        <div class="card-block">
+                            <div class="img-card">
+                                <img src="//placehold.it/300x250" alt="Movie" class="w-100" />
+                            </div>
+                            <p class="tagline card-text text-xs-center">{{ article.body|length > 20 ? article.body|slice(0, 20) ~ '...' : article.body }}</p>
+                            <a href="{{ path('article_show', {
+                                'slug': article.slug
+                            }) }}" class="btn btn-primary btn-block"><i class="fa fa-eye"></i> Смотреть</a>
+                        </div>
+                    </article>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

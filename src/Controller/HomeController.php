@@ -19,7 +19,7 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/blog/{slug}", name="article", requirements={"slug":"\w+"})
+     * @Route("/blog_old/{slug}", name="article", requirements={"slug":"\w+"})
      * @Method({"PUT", "POST", "GET"})
      */
     public function test($slug)

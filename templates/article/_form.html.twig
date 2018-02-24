@@ -1,0 +1,15 @@
+{{ form_start(articleForm) }}
+    {{ form_row(articleForm.title) }}
+    {{ form_row(articleForm.body) }}
+    {{ form_row(articleForm.isPublish) }}
+    {{ form_row(articleForm.createdAt) }}
+
+    {#<div class="foo">#}
+    {#{{ form_widget(articleForm.createdAt.time.hour) }}#}
+    {#</div>#}
+    {#{{ form_widget(articleForm.createdAt.date.year) }}#}
+    {#{% do articleForm.createdAt.setRendered %}
+    {% do articleForm.isPublish.setRendered %}#}
+
+    <button>{{ btnText }}</button>
+{{ form_end(articleForm) }}
