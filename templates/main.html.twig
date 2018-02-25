@@ -33,7 +33,13 @@
 
     <div class="album py-5 bg-light">
         <div class="container">
+            {% for messages in app.flashes %}
+                {% for message in messages %}
+                    <p class="alert alert-success">{{ message }}</p>
+                {% endfor %}
+            {% endfor %}
             {% block body %}{% endblock %}
+
         </div>
     </div>
 

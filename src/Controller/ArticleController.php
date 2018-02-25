@@ -44,8 +44,12 @@ class ArticleController extends Controller
             $em->persist($articleData);
             $em->flush();
 
+            $this->addFlash('success', 'Статья создана');
+
             return $this->redirectToRoute('article_index');
         }
+
+
 
         return $this->render('article/create.html.twig', [
             'articleForm' => $articleForm->createView()
@@ -68,6 +72,8 @@ class ArticleController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($articleData);
             $em->flush();
+
+            $this->addFlash('success', 'Статья обнавлена');
 
             return $this->redirectToRoute('article_index');
         }
