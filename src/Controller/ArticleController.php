@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Form\ArticleType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,10 +54,13 @@ class ArticleController extends Controller
 
     /**
      * @Route("/{slug}/edit", name="article_edit")
+     * @Method({"GET", "PUT"})
      */
     public function edit(Request $request, Article $article)
     {
-        $articleForm = $this->createForm(ArticleType::class, $article);
+        $articleForm = $this->createForm(ArticleType::class, $article, [
+            'method' => 'PUT'
+        ]);
         $articleForm->handleRequest($request);
 
         if($articleForm->isSubmitted() && $articleForm->isValid()){
@@ -81,5 +85,18 @@ class ArticleController extends Controller
         return $this->render('article/show.html.twig', [
             'article' => $article
         ]);
+    }
+
+    /**
+     * @Route("/{id}/delete", name="article_delete")
+     * @Method({"DELETE"})
+     */
+    public function delete(Article $article)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($article);
+        $em->flush();
+
+        return new Response(null, 204);
     }
 }

@@ -1,4 +1,6 @@
-{{ form_start(articleForm) }}
+{{ form_start(articleForm, {
+    "method": (method is defined) ? method : 'post'
+}) }}
     {{ form_row(articleForm.title) }}
     {{ form_row(articleForm.body) }}
     {{ form_row(articleForm.isPublish) }}

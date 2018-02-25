@@ -1,0 +1,46 @@
+{% extends 'main.html.twig' %}
+
+{% block body %}
+    <table class="table table-bordered">
+        <tr>
+            <td>Название</td>
+            <td>Дата</td>
+            <td>Действие</td>
+        </tr>
+        {% for article in articles %}
+            <tr>
+                <td>{{ article.title }}</td>
+                <td>{{ article.updatedAt|date('d-m-Y') }}</td>
+                <td>
+                    <a href="#" class="js-delete-button" data-url="{{ path('article_delete', {'id': article.id }) }}">
+                        <span class="fa fa-close"></span>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        $('.js-delete-button').on('click', function(e){
+            e.preventDefault();
+            var currentLink = $(this);
+
+            currentLink.find('.fa-close')
+                .removeClass('fa-close')
+                .addClass('fa-spin')
+                .addClass('fa-spinner')
+            ;
+
+            $.ajax({
+                url: currentLink.data('url'),
+                method: 'DELETE'
+            }).done(function(){
+                currentLink.closest('tr').fadeOut(1500);
+            })
+        });
+    </script>
+{% endblock %}
