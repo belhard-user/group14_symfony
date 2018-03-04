@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Car;
+use App\Entity\Driver;
 use App\Entity\Test;
 use App\Form\TestType;
 use App\Service\Quotes;
@@ -127,5 +129,55 @@ class TestController extends Controller
         return $this->render('test/edit-test-form.html.twig', [
             'testForm' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/test-db-relations")
+     */
+    public function testRelations()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $driver = new Driver();
+        $driver->setName('Петя');
+        $driver->setNumber(mt_rand(1000000, 9999999));
+
+        $em->persist($driver);
+
+        foreach(['mercedes', 'opel'] as $item){
+            $car = new Car();
+            $car->setMark($item);
+            $car->setDriver($driver);
+
+            $em->persist($car);
+        }
+        $em->flush();
+        /*$driver = $this->getDoctrine()->getRepository('App:Driver')->find(1);
+        $car = $this->getDoctrine()->getRepository('App:Car')->find(3);
+
+        $car->setDriver($driver);
+        $em->persist($car);
+
+        $em->flush();*/
+
+        return $this->render('test/relations.html.twig');
+    }
+
+    /**
+     * @Route("/show-all-drivers")
+     */
+    public function showDrivers()
+    {
+        $drivers = $this->getDoctrine()->getRepository("App:Driver")->findAll();
+
+        foreach($drivers as $driver){
+            echo 'id: ' . $driver->getId() . 'Name: ' . $driver->getName() . '<br>';
+            foreach ($driver->getCars() as $car){
+                echo $car->getMark() . "<hr>";
+            }
+        }
+
+
+        return $this->render('test/show-drivers.html.twig');
     }
 }
