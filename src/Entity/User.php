@@ -35,7 +35,7 @@ class User implements UserInterface
     private $roles = [];
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Article", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Article", mappedBy="user", onDelete="CASCADE")
      * @ORM\JoinColumn(nullable=false)
      */
     private $articles;
