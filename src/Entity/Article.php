@@ -52,6 +52,11 @@ class Article
     private $updatedAt;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="articles")
+     */
+    private $user;
+
+    /**
      * @return mixed
      */
     public function getTitle()
@@ -169,5 +174,21 @@ class Article
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user): void
+    {
+        $this->user = $user;
     }
 }

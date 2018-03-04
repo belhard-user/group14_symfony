@@ -34,7 +34,7 @@ class RegisterController extends Controller
             $em->persist($user);
             $em->flush();
 
-            return $this->redirectToRoute('index');
+            return $this->redirectToRoute('article_index');
         }
 
         return $this->render('register/register.html.twig', [

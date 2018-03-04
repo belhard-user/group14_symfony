@@ -41,6 +41,7 @@ class ArticleController extends Controller
         if($articleForm->isSubmitted() && $articleForm->isValid()){
             $articleData = $articleForm->getData();
             $em = $this->getDoctrine()->getManager();
+            $articleData->setUser($this->getUser());
             $em->persist($articleData);
             $em->flush();
 

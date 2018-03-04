@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -33,7 +34,20 @@ class User implements UserInterface
      */
     private $roles = [];
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Article", mappedBy="user")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $articles;
+
     private $plainPassword;
+
+
+    public function __construct()
+    {
+        $this->articles = new ArrayCollection();
+    }
+
 
     public function getUsername()
     {
@@ -132,5 +146,21 @@ class User implements UserInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return ArrayCollection|Article[]
+     */
+    public function getArticles()
+    {
+        return $this->articles;
+    }
+
+    /**
+     * @param mixed $articles
+     */
+    public function setArticles($articles)
+    {
+        $this->articles[] = $articles;
     }
 }
