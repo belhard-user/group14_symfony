@@ -164,6 +164,21 @@ class TestController extends Controller
     }
 
     /**
+     * @Route("/delete-user")
+     */
+    public function user()
+    {
+        $user = $this->getDoctrine()->getRepository('App:User')->find(3);
+
+        $em = $this
+            ->getDoctrine()
+            ->getManager()
+        ;
+        $em->remove($user);
+        $em->flush();
+    }
+
+    /**
      * @Route("/show-all-drivers")
      */
     public function showDrivers()
