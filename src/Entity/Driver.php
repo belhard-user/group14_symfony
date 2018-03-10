@@ -30,14 +30,38 @@ class Driver
 
 
     /**
-     * @ORM\OneToMany(targetEntity="Car", mappedBy="driver")
+     * @ORM\OneToMany(targetEntity="Car", mappedBy="driver", fetch="EXTRA_LAZY")
+     * @ORM\OrderBy({"mark" = "DESC"})
      */
     private $cars;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Operator", mappedBy="drivers")
+     */
+    private $operators;
 
     
     public function __construct()
     {
         $this->cars = new ArrayCollection();
+        $this->operators = new ArrayCollection();
+    }
+
+    public function addOperators(Operator $operator)
+    {
+        if($this->operators->contains($operator)){
+            return $this;
+        }
+
+        $this->operators[] = $operator;
+        $operator->addDrivers($this);
+
+        return $this;
+    }
+
+    public function removeOperators(Operator $operator)
+    {
+        $this->operators->removeElement($operator);
     }
 
 
@@ -95,6 +119,22 @@ class Driver
     public function setCars(Car $cars)
     {
         $this->cars[] = $cars;
+    }
+
+    /**
+     * @param Car $car
+     */
+    /*public function removeCars(Car $car)
+    {
+        $this->cars->removeElement($car);
+    }*/
+
+    /**
+     * @return ArrayCollection|Operator[]
+     */
+    public function getOperators()
+    {
+        return $this->operators;
     }
 
 

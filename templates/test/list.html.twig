@@ -1,0 +1,22 @@
+{% extends 'main.html.twig' %}
+
+{% block body %}
+    <table class="table table-bordered">
+        <tr>
+            <th>Имя</th>
+            <th>Машины</th>
+            <th>Менеджеры</th>
+            <th>Посмотреть</th>
+        </tr>
+        {% for driver in drivers %}
+            <tr>
+                <td>{{ driver.name }}</td>
+                <td>{{ driver.cars | length }}</td>
+                <td>{{ driver.operators | length }}</td>
+                <td>
+                    <a href="{{ path('driver', {number: driver.number }) }}">Смотреть</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Car;
 use App\Entity\Driver;
 use App\Entity\Test;
+use App\Form\DriverType;
 use App\Form\RegisterFormType;
 use App\Form\TestType;
 use App\Service\Quotes;
@@ -219,6 +220,60 @@ class TestController extends Controller
 
         return $this->render('test/edit-user.html.twig', [
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/attach-operators")
+     */
+    public function attachOperators(Request $request)
+    {
+        $form = $this->createForm(DriverType::class);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($form->getData());
+            $em->flush();
+
+            return $this->redirectToRoute('driver_list');
+        }
+
+
+        /*$operator = $this->getDoctrine()->getRepository('App:Operator')->find(4);
+        $drivers = $this->getDoctrine()->getRepository('App:Driver')->findAll();
+        $em = $this->getDoctrine()->getManager();
+
+        foreach ($drivers as $driver){
+            $operator->addDrivers($driver);
+        }
+        $em->persist($operator);
+        $em->flush();*/
+
+        return $this->render('test/attach-operators.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/list-of-drivers", name="driver_list")
+     */
+    public function listOfDrivers()
+    {
+        $drivers = $this->getDoctrine()->getRepository('App:Driver')->findAll();
+
+        return $this->render('test/list.html.twig', [
+            'drivers' => $drivers
+        ]);
+    }
+
+    /**
+     * @Route("/driver/{number}", name="driver")
+     */
+    public function driver(Driver $driver)
+    {
+        return $this->render('test/drive.html.twig', [
+            'driver' => $driver
         ]);
     }
 }
