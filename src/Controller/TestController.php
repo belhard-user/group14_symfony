@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Car;
 use App\Entity\Driver;
 use App\Entity\Test;
+use App\Form\RegisterFormType;
 use App\Form\TestType;
 use App\Service\Quotes;
 use Psr\Log\LoggerInterface;
@@ -194,5 +195,30 @@ class TestController extends Controller
 
 
         return $this->render('test/show-drivers.html.twig');
+    }
+
+    /**
+     * @Route("/edit-user", name="edit_user")
+     */
+    public function editUser(Request $request)
+    {
+        $user = $this->getDoctrine()->getRepository('App:User')->find(1);
+        $form = $this->createForm(RegisterFormType::class, $user);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $user = $form->getData();
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($user);
+            $em->flush();
+
+            return $this->redirectToRoute('edit_user');
+        }
+
+
+        return $this->render('test/edit-user.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 }

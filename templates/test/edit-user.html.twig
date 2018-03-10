@@ -1,0 +1,12 @@
+{% extends 'main.html.twig' %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.roles) }}
+
+        {% do form.plainPassword.setRendered %}
+        <button>click</button>
+    {{ form_end(form) }}
+{% endblock %}
+
