@@ -24,7 +24,7 @@ class Operator
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Driver", inversedBy="operators")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Driver", inversedBy="operator")
      */
     private $drivers;
 
@@ -41,7 +41,7 @@ class Operator
         }
 
         $this->drivers[] = $driver;
-        $driver->setOperators($this);
+        $driver->addOperator($this);
 
         return $this;
     }

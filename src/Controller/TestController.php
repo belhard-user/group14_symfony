@@ -189,7 +189,7 @@ class TestController extends Controller
 
         foreach($drivers as $driver){
             echo 'id: ' . $driver->getId() . 'Name: ' . $driver->getName() . '<br>';
-            foreach ($driver->getCars() as $car){
+            foreach ($driver->getCar() as $car){
                 echo $car->getMark() . "<hr>";
             }
         }

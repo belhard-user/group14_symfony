@@ -11,8 +11,8 @@
         {% for driver in drivers %}
             <tr>
                 <td>{{ driver.name }}</td>
-                <td>{{ driver.cars | length }}</td>
-                <td>{{ driver.operators | length }}</td>
+                <td>{{ driver.car | length }}</td>
+                <td>{{ driver.operator | length }}</td>
                 <td>
                     <a href="{{ path('driver', {number: driver.number }) }}">Смотреть</a>
                 </td>

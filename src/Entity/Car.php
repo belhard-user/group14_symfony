@@ -23,7 +23,7 @@ class Car
     private $mark;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Driver", inversedBy="cars")
+     * @ORM\ManyToOne(targetEntity="Driver", inversedBy="car")
      */
     private $driver;
 

@@ -18,16 +18,16 @@ class DriverType extends AbstractType
         $builder
             ->add('number')
             ->add('name')
-            ->add('cars', EntityType::class, [
+            ->add('car', EntityType::class, [
                 'class' => Car::class,
                 'choice_label' => 'mark',
-                // 'multiple' => true,
+                'multiple' => true,
                 'query_builder' => function(CarRepository $cars){
                     return $cars->getOrderedCars();
                 },
-                // 'by_reference' => false
+                'by_reference' => false
             ])
-            ->add('operators', EntityType::class, [
+            ->add('operator', EntityType::class, [
                 'class' => Operator::class,
                 'choice_label' => 'name',
                 'multiple' => true,

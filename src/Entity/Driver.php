@@ -33,35 +33,35 @@ class Driver
      * @ORM\OneToMany(targetEntity="Car", mappedBy="driver", fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"mark" = "DESC"})
      */
-    private $cars;
+    private $car;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Operator", mappedBy="drivers")
      */
-    private $operators;
+    private $operator;
 
     
     public function __construct()
     {
-        $this->cars = new ArrayCollection();
-        $this->operators = new ArrayCollection();
+        $this->car = new ArrayCollection();
+        $this->operator = new ArrayCollection();
     }
 
-    public function addOperators(Operator $operator)
+    public function addOperator(Operator $operator)
     {
-        if($this->operators->contains($operator)){
+        if($this->operator->contains($operator)){
             return $this;
         }
 
-        $this->operators[] = $operator;
+        $this->operator[] = $operator;
         $operator->addDrivers($this);
 
         return $this;
     }
 
-    public function removeOperators(Operator $operator)
+    public function removeOperator(Operator $operator)
     {
-        $this->operators->removeElement($operator);
+        $this->operator->removeElement($operator);
     }
 
 
@@ -108,33 +108,34 @@ class Driver
     /**
      * @return ArrayCollection|Car[]
      */
-    public function getCars()
+    public function getCar()
     {
-        return $this->cars;
+        return $this->car;
     }
 
     /**
      * @param mixed $cars
      */
-    public function setCars(Car $cars)
+    public function addCar(Car $cars)
     {
-        $this->cars[] = $cars;
+        $this->car[] = $cars;
+        $cars->setDriver($this);
     }
 
     /**
      * @param Car $car
      */
-    /*public function removeCars(Car $car)
+    public function removeCar(Car $car)
     {
-        $this->cars->removeElement($car);
-    }*/
+        $this->car->removeElement($car);
+    }
 
     /**
      * @return ArrayCollection|Operator[]
      */
-    public function getOperators()
+    public function getOperator()
     {
-        return $this->operators;
+        return $this->operator;
     }
 
 

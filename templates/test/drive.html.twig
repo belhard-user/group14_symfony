@@ -3,11 +3,11 @@
 {% block body %}
     <h2>{{ driver.name }}</h2>
 
-    {% for car in driver.cars %}
+    {% for car in driver.car %}
         <span class="badge badge-warning">{{ car.mark }}</span>
     {% endfor %}
     <hr>
-    {% for operator in driver.operators %}
+    {% for operator in driver.operator %}
         <span class="badge badge-danger">{{ operator.name }}</span>
     {% endfor %}
 {% endblock %}
