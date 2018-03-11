@@ -3,6 +3,7 @@
 }) }}
     {{ form_row(articleForm.title) }}
     {{ form_row(articleForm.body) }}
+    {{ form_row(articleForm.tag) }}
     {{ form_row(articleForm.isPublish) }}
     {{ form_row(articleForm.createdAt) }}
 
@@ -13,5 +14,5 @@
     {#{% do articleForm.createdAt.setRendered %}
     {% do articleForm.isPublish.setRendered %}#}
 
-    <button>{{ btnText }}</button>
+    <button formnovalidate>{{ btnText }}</button>
 {{ form_end(articleForm) }}

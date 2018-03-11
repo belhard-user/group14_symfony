@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Tag;
 use App\Form\ArticleType;
+use App\Form\TagType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -105,5 +107,29 @@ class ArticleController extends Controller
         $em->flush();
 
         return new Response(null, 204);
+    }
+
+    /**
+     * @Route("/add-tags-for-an-article", name="add_tag")
+     */
+    public function addTags(Request $request)
+    {
+        $form = $this->createForm(TagType::class);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            /** @var Tag $tag */
+            $tag = $form->getData();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($tag);
+            $em->flush();
+
+            $this->addFlash('success', 'Тэг добавлен ' . $tag->getTitle());
+            return $this->redirectToRoute('add_tag');
+        }
+
+        return $this->render('article/add-tag.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 }

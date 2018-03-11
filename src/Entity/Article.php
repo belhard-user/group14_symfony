@@ -2,12 +2,16 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
  * @ORM\Table(name="articles")
+ * @UniqueEntity("title", message="Надоел постить одну и ту же новость")
  */
 class Article
 {
@@ -20,6 +24,13 @@ class Article
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Заголовок обязателен для заполнения")
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 255,
+     *      minMessage = "Заголовок должен быть больше 5-ти букавак",
+     *      maxMessage = "Заголовок должен быть не больше 255-ти букавак"
+     * )
      */
     private $title;
 
@@ -30,6 +41,7 @@ class Article
     private $slug;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="text")
      */
     private $body;
@@ -55,6 +67,22 @@ class Article
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="articles")
      */
     private $user;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", mappedBy="article")
+     * @Assert\NotBlank()
+     * @Assert\Valid()
+     */
+    private $tag;
+
+    /**
+     * Article constructor.
+     */
+    public function __construct()
+    {
+        $this->tag = new ArrayCollection();
+    }
+
 
     /**
      * @return mixed
@@ -190,5 +218,40 @@ class Article
     public function setUser($user): void
     {
         $this->user = $user;
+    }
+
+    /**
+     * @return ArrayCollection|Tag[]
+     */
+    public function getTag()
+    {
+        return $this->tag;
+    }
+
+    /**
+     * @param Tag $tag
+     * @return $this
+     */
+    public function addTag(Tag $tag)
+    {
+        if ($this->tag->contains($tag)) {
+            return $this;
+        }
+
+        $this->tag[] = $tag;
+        $tag->addArticle($this);
+
+        return $this;
+    }
+
+    /**
+     * @param Tag $tag
+     * @return $this
+     */
+    public function removeTag(Tag $tag)
+    {
+        $this->tag->removeElement($tag);
+
+        return $this;
     }
 }

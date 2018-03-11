@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Article;
+use App\Entity\Tag;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -27,6 +29,14 @@ class ArticleType extends AbstractType
                 'widget' => 'single_text',
                 'html5' => false,
                 'required' => false
+            ])
+            ->add('tag', EntityType::class, [
+                'class' => Tag::class,
+                'choice_label' => 'title',
+                'label' => 'Тэги',
+                'multiple' => true,
+                'expanded' => true,
+                'by_reference' => false
             ])
         ;
     }

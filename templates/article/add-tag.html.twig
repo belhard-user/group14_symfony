@@ -1,0 +1,9 @@
+{% extends 'main.html.twig' %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_row(form.title) }}
+        <button type="submit">создать</button>
+    {{ form_end(form) }}
+{% endblock %}
+
